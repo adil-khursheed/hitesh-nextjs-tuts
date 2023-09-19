@@ -81,6 +81,11 @@ const LoginPage = () => {
             </Link>{" "}
             here
           </p>
+          <p className="mt-3">
+            <Link href="/forgotpassword" className="underline cursor-pointer">
+              Forgot Password
+            </Link>
+          </p>
         </>
       )}
     </div>
