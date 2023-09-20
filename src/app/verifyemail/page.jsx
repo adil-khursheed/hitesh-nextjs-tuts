@@ -3,6 +3,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function VerifyEmailPage() {
   const [token, setToken] = useState("");
@@ -15,7 +16,7 @@ export default function VerifyEmailPage() {
       setVerified(true);
     } catch (error) {
       setError(true);
-      console.log(error.response.data);
+      toast.error(error.response.data.error);
     }
   };
 

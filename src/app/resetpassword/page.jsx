@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const ResetPasswordPage = () => {
-  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -13,12 +14,18 @@ const ResetPasswordPage = () => {
 
   const restPasswordHandler = async () => {
     try {
-      setLoading(true);
-      await axios.put("/api/users/resetpassword", { token, password });
-      toast.success("Password changed successfully!");
-      router.push("/login");
+      if (token.length > 0) {
+        setLoading(true);
+        await axios.put("/api/users/resetpassword", {
+          token,
+          newPassword,
+          confirmNewPassword,
+        });
+        toast.success("Password changed successfully!");
+        router.push("/login");
+      }
     } catch (error) {
-      toast.error(error.response.data);
+      toast.error(error.response.data.error);
     } finally {
       setLoading(false);
     }
@@ -45,9 +52,20 @@ const ResetPasswordPage = () => {
               className="w-full p-2 border text-black border-gray-300 rounded-lg mb-3 focus:outline-none focus:border-gray-600"
               type="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               placeholder="New Password"
+            />
+            <label htmlFor="confirmPassword" className="mb-2">
+              Confirm Password
+            </label>
+            <input
+              className="w-full p-2 border text-black border-gray-300 rounded-lg mb-3 focus:outline-none focus:border-gray-600"
+              type="password"
+              id="confirmPassword"
+              value={confirmNewPassword}
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
+              placeholder="Confirm Password"
             />
             <button className="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:outline-none focus:border-gray-600">
               Reset Password

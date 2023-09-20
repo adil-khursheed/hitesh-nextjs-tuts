@@ -8,7 +8,14 @@ connect();
 export async function PUT(request) {
   try {
     const reqBody = await request.json();
-    const { token, newPassword } = reqBody;
+    const { token, newPassword, confirmNewPassword } = reqBody;
+
+    if (newPassword !== confirmNewPassword) {
+      return NextResponse.json(
+        { error: "Passwords does not match!" },
+        { status: 400 }
+      );
+    }
 
     const user = await User.findOne({
       forgotPasswordToken: token,
